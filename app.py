@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker  # Importar para forzar enteros en Z
 import io
 
 st.set_page_config(layout="wide")
@@ -15,7 +16,7 @@ with st.sidebar:
     width = st.number_input("Ancho de la Nave", min_value=1.0, max_value=25.0, value=10.0, step=0.1)
 
 def plot_circular_roof_warehouse(column_height, arch_height, frame_spacing, num_frames, width):
-    fig = plt.figure(figsize=(6, 4), dpi=100)  # Ajuste de tamaño
+    fig = plt.figure(figsize=(6, 4), dpi=100)
     ax = fig.add_subplot(111, projection='3d')
 
     ax.set_xlim([0, (num_frames - 1) * frame_spacing])
@@ -60,9 +61,11 @@ def plot_circular_roof_warehouse(column_height, arch_height, frame_spacing, num_
     ax.set_zlabel('')
     ax.set_title("")
 
+    ax.zaxis.set_major_locator(ticker.MaxNLocator(integer=True))  # 🔹 Forzar enteros en Z
+
     return fig
 
-# Generar y mostrar la imagen con tamaño controlado
+# Generar la imagen
 fig = plot_circular_roof_warehouse(column_height, arch_height, frame_spacing, num_frames, width)
 
 # Guardar imagen en buffer
