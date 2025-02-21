@@ -55,10 +55,10 @@ def plot_circular_roof_warehouse(column_height, arch_height, frame_spacing, num_
                 x, y, z = zip(*element)
                 ax.plot(x, y, z, color='blue', linewidth=2)
     
-    ax.set_xlabel('X')
-    ax.set_ylabel('Y')
-    ax.set_zlabel('Z')
-    ax.set_title("Nave Industrial con Techo Curvo 3D")
+    ax.set_xlabel('')
+    ax.set_ylabel('')
+    ax.set_zlabel('')
+    ax.set_title("")
 
     return fig
 
