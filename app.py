@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+import io
 
 st.set_page_config(layout="wide")
 
@@ -15,7 +15,7 @@ with st.sidebar:
     width = st.number_input("Ancho de la Nave", min_value=1.0, max_value=25.0, value=10.0, step=0.1)
 
 def plot_circular_roof_warehouse(column_height, arch_height, frame_spacing, num_frames, width):
-    fig = plt.figure(figsize=(6, 4))
+    fig = plt.figure(figsize=(6, 4), dpi=100)  # Ajuste de tamaño
     ax = fig.add_subplot(111, projection='3d')
 
     ax.set_xlim([0, (num_frames - 1) * frame_spacing])
@@ -62,5 +62,13 @@ def plot_circular_roof_warehouse(column_height, arch_height, frame_spacing, num_
 
     return fig
 
+# Generar y mostrar la imagen con tamaño controlado
 fig = plot_circular_roof_warehouse(column_height, arch_height, frame_spacing, num_frames, width)
-st.pyplot(fig)
+
+# Guardar imagen en buffer
+buf = io.BytesIO()
+fig.savefig(buf, format="png", bbox_inches="tight")
+buf.seek(0)
+
+# Mostrar en Streamlit con ancho controlado
+st.image(buf, width=700)
