@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker  # Importar para forzar enteros en Z
+import matplotlib.ticker as ticker
 import io
 
 st.set_page_config(layout="wide")
@@ -16,14 +16,14 @@ with st.sidebar:
     width = st.number_input("Ancho de la Nave", min_value=1.0, max_value=25.0, value=10.0, step=0.1)
 
 def plot_circular_roof_warehouse(column_height, arch_height, frame_spacing, num_frames, width):
-    fig = plt.figure(figsize=(6, 4), dpi=100)
+    fig = plt.figure(figsize=(6, 4), dpi=120)
     ax = fig.add_subplot(111, projection='3d')
 
     ax.set_xlim([0, (num_frames - 1) * frame_spacing])
     ax.set_ylim([0, width])
     ax.set_zlim([0, column_height + arch_height])
 
-    num_points = 20  # Mayor número de puntos para una curva más suave
+    num_points = 20  
 
     for i in range(num_frames):
         x_offset = i * frame_spacing
@@ -31,7 +31,7 @@ def plot_circular_roof_warehouse(column_height, arch_height, frame_spacing, num_
         column1 = [(x_offset, 0, 0), (x_offset, 0, column_height)]
         column2 = [(x_offset, width, 0), (x_offset, width, column_height)]
 
-        angles = np.linspace(0, np.pi, num_points)  # De 0° a 180°
+        angles = np.linspace(0, np.pi, num_points)
         roof_curve = [(x_offset, width / 2 + (width / 2) * np.cos(angle), column_height + arch_height * np.sin(angle)) for angle in angles]
 
         for element in [column1, column2]:
@@ -56,12 +56,20 @@ def plot_circular_roof_warehouse(column_height, arch_height, frame_spacing, num_
                 x, y, z = zip(*element)
                 ax.plot(x, y, z, color='blue', linewidth=2)
     
+    # Formato de los ejes
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(1))  # 🔹 Eje X con conteo de 1 en 1
+    ax.yaxis.set_major_locator(ticker.MaxNLocator(integer=True))
+    ax.zaxis.set_major_locator(ticker.MaxNLocator(integer=True))
+
+    # Estilo de los ticks
+    ax.tick_params(axis='both', which='major', labelsize=8)  # 🔹 Reduce tamaño de números en ejes
+    ax.grid(True, linestyle="--", linewidth=0.5, alpha=0.5)  # 🔹 Líneas de la rejilla más delgadas
+
+    # Remover etiquetas de los ejes
     ax.set_xlabel('')
     ax.set_ylabel('')
     ax.set_zlabel('')
     ax.set_title("")
-
-    ax.zaxis.set_major_locator(ticker.MaxNLocator(integer=True))  # 🔹 Forzar enteros en Z
 
     return fig
 
