@@ -9,29 +9,22 @@ st.set_page_config(layout="wide")
 with st.sidebar:
     st.header("Parámetros de la Nave con Techo Curvo")
 
-    column_height = st.number_input("Altura de Columnas", min_value=1.0, max_value=20.0, value=10.0, step=0.1)
-    arch_height = st.number_input("Altura del Arco", min_value=1.0, max_value=15.0, value=5.0, step=0.1)
+    column_height = st.number_input("Altura de Columnas", min_value=1.0, max_value=15.0, value=4.0, step=0.1)
+    arch_height = st.number_input("Altura del Arco", min_value=1.0, max_value=15.0, value=2.0, step=0.1)
     frame_spacing = st.number_input("Espaciado de Pórticos", min_value=1.0, max_value=15.0, value=5.0, step=0.1)
-    num_frames = st.number_input("Número de Pórticos", min_value=1, max_value=10, value=3, step=1)
+    num_frames = st.number_input("Número de Pórticos", min_value=1, max_value=15, value=3, step=1)
     width = st.number_input("Ancho de la Nave", min_value=1.0, max_value=25.0, value=10.0, step=0.1)
 
 def plot_circular_roof_warehouse(column_height, arch_height, frame_spacing, num_frames, width):
-    fig = plt.figure(figsize=(6, 4), dpi=120)  # 🔹 Ajuste de tamaño y resolución
+    fig = plt.figure(figsize=(8, 6))
     ax = fig.add_subplot(111, projection='3d')
 
     ax.set_xlim([0, (num_frames - 1) * frame_spacing])
     ax.set_ylim([0, width])
     ax.set_zlim([0, column_height + arch_height])
 
-    # 🔹 Ajustes para hacer los ejes más limpios
-    ax.xaxis.set_major_locator(ticker.MultipleLocator(1))  # 🔹 Eje X cuenta de 1 en 1
-    ax.yaxis.set_major_locator(ticker.MaxNLocator(integer=True))
-    ax.zaxis.set_major_locator(ticker.MaxNLocator(integer=True))
-
-    ax.tick_params(axis='both', which='major', labelsize=8)  # 🔹 Reducir tamaño de los números en los ejes
-    ax.grid(True, linestyle="--", linewidth=0.5, alpha=0.5)  # 🔹 Líneas de la rejilla más delgadas
-
-    num_points = 20  # Mayor número de puntos para una curva más suave
+    # Forzar enteros en el eje X
+    ax.xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
 
     for i in range(num_frames):
         x_offset = i * frame_spacing
