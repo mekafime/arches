@@ -23,6 +23,8 @@ def plot_circular_roof_warehouse(column_height, arch_height, frame_spacing, num_
     ax.set_ylim([0, width])
     ax.set_zlim([0, column_height + arch_height])
 
+    num_points = 20
+
     # Forzar enteros en el eje X
     ax.xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
 
